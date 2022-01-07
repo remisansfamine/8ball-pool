@@ -156,10 +156,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf29fdccdf20cbc4e8ce599d2b580bb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isStatic: 0
   hasGravity: 0
-  mass: 1500
+  mass: 9500
   averageAcceleration: {x: 0, y: 0, z: 0}
-  speed: {x: 0, y: 0, z: 0}
+  speed: {x: 0.4, y: 0, z: 0}
   GUIOffset: {x: 0, y: 100}
 --- !u!65 &76586005
 BoxCollider:
@@ -286,10 +287,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf29fdccdf20cbc4e8ce599d2b580bb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isStatic: 0
   hasGravity: 0
   mass: 9500
   averageAcceleration: {x: 0, y: 0, z: 0}
-  speed: {x: -0.4, y: 0, z: 0}
+  speed: {x: 0.1, y: 0, z: 0}
   GUIOffset: {x: 0, y: 0}
 --- !u!65 &422594106
 BoxCollider:
