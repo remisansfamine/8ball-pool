@@ -4,8 +4,8 @@ using UnityEngine;
 
 static public class MathsUtils
 {
-    static public Vector2 Reflect(in this Vector2 toReflect, in Vector2 normal)
+    static public Vector3 Reflect(in this Vector3 toReflect, in Vector3 normal)
     {
-        return toReflect - 2f * Vector2.Dot(toReflect, normal) * normal;
+        return toReflect - 2f * Vector3.Dot(toReflect, normal) * normal;
     }
 }
