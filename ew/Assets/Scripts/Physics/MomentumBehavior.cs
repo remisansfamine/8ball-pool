@@ -14,11 +14,13 @@ public class MomentumBehavior : MonoBehaviour
     [SerializeField] private float mass = 1f;
 
     [SerializeField] private Vector3 initialVelocity;
+    public Vector3 velocity;
 
     private Vector3 force = Vector3.zero;
 
     private Vector3 acceleration = Vector3.zero;
     [SerializeField] private Vector3 averageAcceleration = Vector3.zero;
+    Vector3 nextPosition => transform.position + velocity * Time.fixedDeltaTime;
 
     private Vector3 lastSpeed = Vector3.zero;
 
@@ -30,44 +32,52 @@ public class MomentumBehavior : MonoBehaviour
 
     private void Awake()
     {
-        rb = GetComponent<Rigidbody>();
-        rb.velocity = initialVelocity;
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (isStatic || !collision.gameObject.TryGetComponent(out MomentumBehavior other))
-            return;
-
-        ContactPoint[] contacts = collision.contacts;
-        Vector3 averageNormal = new Vector3(contacts.Average(contact => contact.normal.x),
-                                            contacts.Average(contact => contact.normal.y),
-                                            contacts.Average(contact => contact.normal.z));
-
-
-        Bounce(averageNormal, other);
-        // Vector3 newAverageAcceleration = direction * averageAcceleration.magnitude;
-        // force += (newAverageAcceleration + other.averageAcceleration) * massSum;
+        if (TryGetComponent(out rb))
+            rb.velocity = initialVelocity;
     }
 
     private void Bounce(Vector3 normal, MomentumBehavior other)
     {
-        Vector3 direction = MathsUtils.Reflect(rb.velocity.normalized, normal);
-        Vector3 newSpeed = direction * rb.velocity.magnitude;
+        if (!other || other == this)
+            return;
 
-        Vector3 newMomentum = rb.velocity * mass;
+        Debug.Log(other);
+
+        Vector3 direction = MathsUtils.Reflect(velocity.normalized, normal);
+
+        Vector3 newSpeed = direction * velocity.magnitude;
+        // Vector3 newAverageAcceleration = direction * averageAcceleration.magnitude;
+        // force += (newAverageAcceleration + other.averageAcceleration) * massSum;
+
+        Vector3 newMomentum = newSpeed * mass;
 
         Vector3 momentumSum = newMomentum + other.momentum;
 
         float massSum = mass + other.mass;
 
-        rb.velocity = momentumSum / massSum;
+        Vector3 finalSpeed = momentumSum / massSum;
+
+        velocity = newSpeed;
+        transform.position = nextPosition;
+
+        if (!other.isStatic)
+        {
+            other.velocity = finalSpeed;
+            other.transform.position = other.nextPosition;
+        }
     }
+
 
     private void FixedUpdate()
     {
         if (isStatic)
             return;
+
+        float distance = Vector3.Distance(transform.position, nextPosition);
+        RaycastHit[] hits = Physics.SphereCastAll(transform.position, 0.5f, velocity, distance);
+
+        foreach (RaycastHit hit in hits)
+            Bounce(hit.normal, hit.collider.GetComponent<MomentumBehavior>());
 
         if (hasGravity)
             force += -9.81f * mass * Vector3.up;
@@ -75,22 +85,24 @@ public class MomentumBehavior : MonoBehaviour
         acceleration = force / mass;
         force = Vector3.zero;
 
-        lastSpeed = rb.velocity;
-        rb.velocity += acceleration * Time.fixedDeltaTime;
+        lastSpeed = velocity;
+        velocity += acceleration * Time.fixedDeltaTime;
 
-        averageAcceleration = (rb.velocity + lastSpeed) / Time.fixedDeltaTime;
+        averageAcceleration = (velocity + lastSpeed) / Time.fixedDeltaTime;
 
-        momentum = mass * rb.velocity;
+        momentum = mass * velocity;
+
+        transform.position = nextPosition;
+
 
     }
-
     private void OnGUI()
     {
         if (!debug)
             return;
 
         GUIContent content = new GUIContent();
-        content.text += "Speed = " + rb.velocity + '\n';
+        content.text += "Speed = " + velocity + '\n';
         content.text += "Momentum = " + momentum + '\n';
         GUI.Label(new Rect(10 + GUIOffset.x, 10 + GUIOffset.y, 150, 100), content);
     }

@@ -34,7 +34,7 @@ public class PlayerBehavior : MonoBehaviour
             Vector3 direction = pushOrigin - hit.point;
             Vector3 forceVec = new Vector3(direction.x * force, 0f, direction.z * force);
 
-            whiteBall.rb.velocity = Vector3.ClampMagnitude(forceVec, maxSpeed);
+            whiteBall.velocity = Vector3.ClampMagnitude(forceVec, maxSpeed);
         }
     }
 }
