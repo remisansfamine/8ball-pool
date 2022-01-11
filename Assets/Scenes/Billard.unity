@@ -266,7 +266,7 @@ Transform:
   - {fileID: 45865159}
   - {fileID: 1773093223}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &125727248
 GameObject:
@@ -319,11 +319,9 @@ MonoBehaviour:
   isStatic: 0
   hasGravity: 0
   mass: 1
-  initialVelocity: {x: 0, y: 0, z: 0}
   velocity: {x: 0, y: 0, z: 0}
-  averageAcceleration: {x: 0, y: 0, z: 0}
+  frictionCoeff: 0.5
   GUIOffset: {x: 0, y: 50}
-  rb: {fileID: 0}
 --- !u!54 &125727251
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -443,7 +441,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &201148694
 GameObject:
@@ -496,11 +494,9 @@ MonoBehaviour:
   isStatic: 0
   hasGravity: 0
   mass: 1
-  initialVelocity: {x: 0, y: 0, z: 0}
   velocity: {x: 0, y: 0, z: 0}
-  averageAcceleration: {x: 0, y: 0, z: 0}
+  frictionCoeff: 0.5
   GUIOffset: {x: 0, y: 50}
-  rb: {fileID: 0}
 --- !u!54 &201148697
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -630,11 +626,9 @@ MonoBehaviour:
   isStatic: 0
   hasGravity: 0
   mass: 1
-  initialVelocity: {x: 0, y: 0, z: 0}
   velocity: {x: 0, y: 0, z: 0}
-  averageAcceleration: {x: 0, y: 0, z: 0}
+  frictionCoeff: 0.5
   GUIOffset: {x: 0, y: 50}
-  rb: {fileID: 0}
 --- !u!54 &212301023
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -764,11 +758,9 @@ MonoBehaviour:
   isStatic: 0
   hasGravity: 0
   mass: 1
-  initialVelocity: {x: 0, y: 0, z: 0}
   velocity: {x: 0, y: 0, z: 0}
-  averageAcceleration: {x: 0, y: 0, z: 0}
+  frictionCoeff: 0.5
   GUIOffset: {x: 0, y: 50}
-  rb: {fileID: 0}
 --- !u!54 &263490569
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -992,11 +984,9 @@ MonoBehaviour:
   isStatic: 1
   hasGravity: 0
   mass: 1
-  initialVelocity: {x: 0, y: 0, z: 0}
   velocity: {x: 0, y: 0, z: 0}
-  averageAcceleration: {x: 0, y: 0, z: 0}
+  frictionCoeff: 0.05
   GUIOffset: {x: 0, y: 0}
-  rb: {fileID: 0}
 --- !u!65 &328926091
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1207,11 +1197,9 @@ MonoBehaviour:
   isStatic: 0
   hasGravity: 0
   mass: 1
-  initialVelocity: {x: 0, y: 0, z: 0}
   velocity: {x: 0, y: 0, z: 0}
-  averageAcceleration: {x: 0, y: 0, z: 0}
+  frictionCoeff: 0.5
   GUIOffset: {x: 0, y: 50}
-  rb: {fileID: 0}
 --- !u!54 &460730767
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1327,11 +1315,9 @@ MonoBehaviour:
   isStatic: 0
   hasGravity: 0
   mass: 1
-  initialVelocity: {x: 0, y: 0, z: 0}
   velocity: {x: 0, y: 0, z: 0}
-  averageAcceleration: {x: 0, y: 0, z: 0}
+  frictionCoeff: 0.5
   GUIOffset: {x: 0, y: 50}
-  rb: {fileID: 0}
 --- !u!54 &507587428
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1468,7 +1454,7 @@ Transform:
   - {fileID: 1284864472}
   - {fileID: 1800550575}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &535590107
 GameObject:
@@ -1507,11 +1493,9 @@ MonoBehaviour:
   isStatic: 0
   hasGravity: 0
   mass: 1
-  initialVelocity: {x: 0, y: 0, z: 0}
   velocity: {x: 0, y: 0, z: 0}
-  averageAcceleration: {x: 0, y: 0, z: 0}
+  frictionCoeff: 0.5
   GUIOffset: {x: 0, y: 50}
-  rb: {fileID: 0}
 --- !u!54 &535590109
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1655,11 +1639,9 @@ MonoBehaviour:
   isStatic: 0
   hasGravity: 0
   mass: 1
-  initialVelocity: {x: 0, y: 0, z: 0}
   velocity: {x: 0, y: 0, z: 0}
-  averageAcceleration: {x: 0, y: 0, z: 0}
+  frictionCoeff: 0.5
   GUIOffset: {x: 0, y: 50}
-  rb: {fileID: 0}
 --- !u!54 &620414391
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1884,11 +1866,9 @@ MonoBehaviour:
   isStatic: 0
   hasGravity: 0
   mass: 1
-  initialVelocity: {x: 0, y: 0, z: 0}
   velocity: {x: 0, y: 0, z: 0}
-  averageAcceleration: {x: 0, y: 0, z: 0}
+  frictionCoeff: 0.5
   GUIOffset: {x: 0, y: 50}
-  rb: {fileID: 0}
 --- !u!54 &764363596
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1901,7 +1881,7 @@ Rigidbody:
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 0
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
@@ -2014,7 +1994,7 @@ Transform:
   - {fileID: 1899180654}
   - {fileID: 1298761168}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &936586997
 GameObject:
@@ -2160,11 +2140,9 @@ MonoBehaviour:
   isStatic: 0
   hasGravity: 0
   mass: 1
-  initialVelocity: {x: 0, y: 0, z: 0}
   velocity: {x: 0, y: 0, z: 0}
-  averageAcceleration: {x: 0, y: 0, z: 0}
+  frictionCoeff: 0.5
   GUIOffset: {x: 0, y: 50}
-  rb: {fileID: 0}
 --- !u!54 &939530156
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2294,11 +2272,9 @@ MonoBehaviour:
   isStatic: 0
   hasGravity: 0
   mass: 1
-  initialVelocity: {x: 0, y: 0, z: 0}
   velocity: {x: 0, y: 0, z: 0}
-  averageAcceleration: {x: 0, y: 0, z: 0}
+  frictionCoeff: 0.5
   GUIOffset: {x: 0, y: 50}
-  rb: {fileID: 0}
 --- !u!54 &1046593623
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2471,7 +2447,7 @@ Transform:
   m_LocalScale: {x: 100, y: 1, z: 100}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1061266486
 GameObject:
@@ -2509,11 +2485,9 @@ MonoBehaviour:
   isStatic: 1
   hasGravity: 0
   mass: 1
-  initialVelocity: {x: 0, y: 0, z: 0}
   velocity: {x: 0, y: 0, z: 0}
-  averageAcceleration: {x: 0, y: 0, z: 0}
+  frictionCoeff: 0.05
   GUIOffset: {x: 0, y: 0}
-  rb: {fileID: 0}
 --- !u!65 &1061266488
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2797,11 +2771,9 @@ MonoBehaviour:
   isStatic: 0
   hasGravity: 0
   mass: 1
-  initialVelocity: {x: 0, y: 0, z: 0}
   velocity: {x: 0, y: 0, z: 0}
-  averageAcceleration: {x: 0, y: 0, z: 0}
+  frictionCoeff: 0.5
   GUIOffset: {x: 0, y: 50}
-  rb: {fileID: 0}
 --- !u!54 &1284864474
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3005,7 +2977,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1483583120
 GameObject:
@@ -3044,11 +3016,9 @@ MonoBehaviour:
   isStatic: 0
   hasGravity: 0
   mass: 1
-  initialVelocity: {x: 0, y: 0, z: 0}
   velocity: {x: 0, y: 0, z: 0}
-  averageAcceleration: {x: 0, y: 0, z: 0}
+  frictionCoeff: 0.5
   GUIOffset: {x: 0, y: 50}
-  rb: {fileID: 0}
 --- !u!54 &1483583122
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3061,7 +3031,7 @@ Rigidbody:
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 0
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
@@ -3192,11 +3162,9 @@ MonoBehaviour:
   isStatic: 0
   hasGravity: 0
   mass: 1
-  initialVelocity: {x: 0, y: 0, z: 0}
   velocity: {x: 0, y: 0, z: 0}
-  averageAcceleration: {x: 0, y: 0, z: 0}
+  frictionCoeff: 0.5
   GUIOffset: {x: 0, y: 50}
-  rb: {fileID: 0}
 --- !u!54 &1488713531
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3326,11 +3294,9 @@ MonoBehaviour:
   isStatic: 0
   hasGravity: 0
   mass: 1
-  initialVelocity: {x: 0, y: 0, z: 0}
   velocity: {x: 0, y: 0, z: 0}
-  averageAcceleration: {x: 0, y: 0, z: 0}
+  frictionCoeff: 0.5
   GUIOffset: {x: 0, y: 50}
-  rb: {fileID: 0}
 --- !u!54 &1536704832
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3439,7 +3405,7 @@ Transform:
   - {fileID: 2132814379}
   - {fileID: 1119676571}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1773093222
 GameObject:
@@ -3601,11 +3567,9 @@ MonoBehaviour:
   isStatic: 0
   hasGravity: 0
   mass: 1
-  initialVelocity: {x: 0, y: 0, z: 0}
   velocity: {x: 0, y: 0, z: 0}
-  averageAcceleration: {x: 0, y: 0, z: 0}
+  frictionCoeff: 0.5
   GUIOffset: {x: 0, y: 50}
-  rb: {fileID: 0}
 --- !u!54 &1800550577
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3829,11 +3793,9 @@ MonoBehaviour:
   isStatic: 1
   hasGravity: 0
   mass: 1
-  initialVelocity: {x: 0, y: 0, z: 0}
   velocity: {x: 0, y: 0, z: 0}
-  averageAcceleration: {x: 0, y: 0, z: 0}
+  frictionCoeff: 0.05
   GUIOffset: {x: 0, y: 0}
-  rb: {fileID: 0}
 --- !u!65 &1899180651
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3946,11 +3908,9 @@ MonoBehaviour:
   isStatic: 1
   hasGravity: 0
   mass: 1
-  initialVelocity: {x: 0, y: 0, z: 0}
   velocity: {x: 0, y: 0, z: 0}
-  averageAcceleration: {x: 0, y: 0, z: 0}
+  frictionCoeff: 0.05
   GUIOffset: {x: 0, y: 0}
-  rb: {fileID: 0}
 --- !u!65 &2006510957
 BoxCollider:
   m_ObjectHideFlags: 0
