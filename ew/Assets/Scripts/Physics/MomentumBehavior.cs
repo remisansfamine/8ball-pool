@@ -20,6 +20,7 @@ public class MomentumBehavior : MonoBehaviour
 
     private Vector3 acceleration = Vector3.zero;
     [SerializeField] private Vector3 averageAcceleration = Vector3.zero;
+
     Vector3 nextPosition => transform.position + velocity * Time.fixedDeltaTime;
 
     private Vector3 lastSpeed = Vector3.zero;
@@ -38,16 +39,12 @@ public class MomentumBehavior : MonoBehaviour
 
     private void Bounce(Vector3 normal, MomentumBehavior other)
     {
-        if (!other || other == this)
+        if (isStatic || !other || other == this)
             return;
-
-        Debug.Log(other);
 
         Vector3 direction = MathsUtils.Reflect(velocity.normalized, normal);
 
         Vector3 newSpeed = direction * velocity.magnitude;
-        // Vector3 newAverageAcceleration = direction * averageAcceleration.magnitude;
-        // force += (newAverageAcceleration + other.averageAcceleration) * massSum;
 
         Vector3 newMomentum = newSpeed * mass;
 
@@ -57,45 +54,57 @@ public class MomentumBehavior : MonoBehaviour
 
         Vector3 finalSpeed = momentumSum / massSum;
 
-        velocity = newSpeed;
-        transform.position = nextPosition;
+        velocity = finalSpeed;
+    }
 
-        if (!other.isStatic)
+    void ComputeCollisions()
+    {
+        float distance = Vector3.Distance(transform.position, nextPosition);
+
+        bool hasHit = Physics.SphereCast(transform.position, 0.5f, velocity, out RaycastHit hit, distance);
+
+        int iterationMax = 10;
+        for (int i = 0; i < iterationMax && hasHit; i++)
         {
-            other.velocity = finalSpeed;
-            other.transform.position = other.nextPosition;
+            if (!hit.collider.TryGetComponent(out MomentumBehavior otherMomentum))
+                break;
+
+            Bounce(hit.normal, otherMomentum);
+            otherMomentum.Bounce(hit.normal, this);
+
+            distance = Vector3.Distance(transform.position, nextPosition);
+            hasHit = Physics.SphereCast(transform.position, 0.5f, velocity, out hit, distance);
         }
     }
 
+    private void ApplyNewtonianLaws()
+    {
+        acceleration = force / mass;
+        force = Vector3.zero;
+
+        velocity += acceleration * Time.fixedDeltaTime;
+
+        transform.position = nextPosition;
+    }
 
     private void FixedUpdate()
     {
         if (isStatic)
             return;
 
-        float distance = Vector3.Distance(transform.position, nextPosition);
-        RaycastHit[] hits = Physics.SphereCastAll(transform.position, 0.5f, velocity, distance);
-
-        foreach (RaycastHit hit in hits)
-            Bounce(hit.normal, hit.collider.GetComponent<MomentumBehavior>());
+        ComputeCollisions();
 
         if (hasGravity)
             force += -9.81f * mass * Vector3.up;
 
-        acceleration = force / mass;
-        force = Vector3.zero;
-
-        lastSpeed = velocity;
-        velocity += acceleration * Time.fixedDeltaTime;
+        ApplyNewtonianLaws();
 
         averageAcceleration = (velocity + lastSpeed) / Time.fixedDeltaTime;
+        lastSpeed = velocity;
 
         momentum = mass * velocity;
-
-        transform.position = nextPosition;
-
-
     }
+
     private void OnGUI()
     {
         if (!debug)
