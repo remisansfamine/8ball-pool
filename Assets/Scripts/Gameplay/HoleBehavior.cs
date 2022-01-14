@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class HoleBehavior : MonoBehaviour
 {
-    [SerializeField] PointCounterScript pointCounter;
+    [SerializeField] GameManagerScript gameManager;
 
     private void OnTriggerEnter(Collider other)
     {
+        gameManager?.HoleCallback(other.gameObject.GetComponent<MomentumBehavior>());
         Destroy(other.gameObject);
-        pointCounter?.AddPoint();
     }
 }
