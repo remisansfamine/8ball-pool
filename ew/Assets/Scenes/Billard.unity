@@ -460,8 +460,8 @@ MonoBehaviour:
   - {fileID: 2132814380}
   - {fileID: 1119676572}
   mainBall: {fileID: 535590108}
-  force: 5
-  maxSpeed: 30
+  force: 7.64
+  maxSpeed: 86.69
   epsilonVelocity: 0.001
 --- !u!1 &201148694
 GameObject:
