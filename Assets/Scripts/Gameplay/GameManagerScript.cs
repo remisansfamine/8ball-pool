@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManagerScript : MonoBehaviour
 {
@@ -12,14 +13,29 @@ public class GameManagerScript : MonoBehaviour
 
     bool turnLaunched = true;
 
-    [SerializeField] private float force = 1f;
     [SerializeField] private float maxSpeed = 1f;
 
     [SerializeField] private float epsilonVelocity = 0.001f;
 
     Vector3 pushOrigin;
 
-    bool canClickUp = false;
+    [Header("Slider")]
+    [SerializeField] private Slider slider;
+    [SerializeField] private float sliderCoef = 0.05f;
+    private float sliderForceCoef = 0.05f;
+    bool sliderUp = false;
+    bool sliderLock = false;
+
+    [Header("PoolCue")]
+    [SerializeField] private GameObject poolCue;
+    [SerializeField] private GameObject sprite;
+    [SerializeField] private float force = 1f;
+    [SerializeField] private float angleForce = 1f;
+
+    private void OnEnable()
+    {
+        slider.onValueChanged.AddListener(SliderEvent);
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -31,9 +47,14 @@ public class GameManagerScript : MonoBehaviour
     void Update()
     {
         if (turnLaunched)
+        {
+            poolCue.gameObject.SetActive(true);
             Play();
+        }
         else if (CheckTurnPassed())
+        {
             ChangeTurn();
+        }
     }
 
     void ChangeTurn()
@@ -45,32 +66,71 @@ public class GameManagerScript : MonoBehaviour
         turnLaunched = true;
     }
 
-    private void Play()
+    private IEnumerator sliderCoroutine()
     {
-        if (Input.GetButtonDown("Shoot"))
+        sliderLock = true;
+        while (slider.value != 1)
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            slider.value += 1 * sliderForceCoef;
 
-            if (Physics.Raycast(ray, out RaycastHit hit))
-                pushOrigin = hit.point;
-
-            canClickUp = true;
+            yield return null;
         }
 
-        if (Input.GetButtonUp("Shoot") && canClickUp)
+        sliderLock = false;
+        slider.enabled = true;
+
+    }
+
+
+    public void SliderEvent(float value)
+    {
+        if (!sliderUp && !sliderLock)
+            sliderUp = true;
+    }
+
+    private void Play()
+    {
+        poolCue.transform.position = new Vector3(mainBall.transform.position.x, 
+            poolCue.transform.position.y, 
+            mainBall.transform.position.z);
+
+        if (Input.GetButton("Shoot") && !sliderUp)
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
             if (!Physics.Raycast(ray, out RaycastHit hit))
                 return;
 
-            Vector3 direction = pushOrigin - hit.point;
-            Vector3 forceVec = new Vector3(direction.x * force, 0f, direction.z * force);
+            Vector3 dir = hit.point -mainBall.transform.position;
+            dir.y = 0;
+            poolCue.transform.forward = dir;
 
-            mainBall.velocity = Vector3.ClampMagnitude(forceVec, maxSpeed);
-
-            turnLaunched = canClickUp = false;
+            Debug.Log("Touch");
         }
+
+
+        if (Input.GetButtonUp("Shoot") && sliderUp)
+        {
+            if (slider.value != 1.0f)
+            {
+                Debug.Log("Force = " + force * (1 - slider.value));
+                slider.enabled = false;
+
+                sliderForceCoef = (1 - slider.value) * sliderCoef;
+
+                StartCoroutine("sliderCoroutine");
+
+                Vector3 direction = -poolCue.transform.forward;
+                Vector3 forceVec = new Vector3(direction.x * force, 0f, direction.z * force);
+                mainBall.velocity = Vector3.ClampMagnitude(forceVec, maxSpeed);
+
+                poolCue.gameObject.SetActive(false);
+
+            }
+
+            turnLaunched = sliderUp = false;
+        }
+        
     }
     bool CheckTurnPassed() => mainBall.velocity.sqrMagnitude < epsilonVelocity;
 
