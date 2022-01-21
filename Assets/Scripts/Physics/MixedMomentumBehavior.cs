@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-public class MomentumBehavior : MonoBehaviour
+public class MixedMomentumBehavior : MonoBehaviour
 {
     [SerializeField] private bool debug = false;
 
@@ -24,12 +24,37 @@ public class MomentumBehavior : MonoBehaviour
     Vector3 lastPositionCollision = Vector3.zero;
 
     Vector3 nextPosition => transform.position + velocity * Time.fixedDeltaTime;
+    Quaternion nextRotation => transform.rotation * Quaternion.Euler(Time.fixedDeltaTime * angularVelocity);
 
     private Vector3 momentum = Vector3.zero;
 
     [SerializeField] private Vector2 GUIOffset;
 
-    private void Bounce(Vector3 normal, MomentumBehavior other)
+    [SerializeField] private float momentOfInertia = 1f;
+
+    [SerializeField] private Vector3 torque = Vector3.zero;
+    [SerializeField] private Vector3 angularMomentum = Vector3.zero;
+    [SerializeField] private Vector3 angularAcceleration = Vector3.zero;
+    [SerializeField] private Vector3 angularVelocity = Vector3.zero;
+    [SerializeField] private Vector3 orientation = Vector3.zero;
+
+
+    void AddForce(Vector3 _force)
+    {
+        force += _force;
+    }
+
+    void AddTorque(Vector3 _force, Vector3 _position)
+    {
+        torque += Vector3.Cross(_position - transform.position, _force);
+    }
+    public void AddForceTorque(Vector3 _force, Vector3 _position)
+    {
+        AddForce(_force);
+        AddTorque(_force, _position);
+    }
+
+    private void Bounce(Vector3 normal, MixedMomentumBehavior other)
     {
         if (isStatic || !other || other == this)
             return;
@@ -62,7 +87,7 @@ public class MomentumBehavior : MonoBehaviour
             int iterationMax = 10;
             for (int i = 0; i < iterationMax && hasHit; i++)
             {
-                if (!hit.collider.TryGetComponent(out MomentumBehavior other))
+                if (!hit.collider.TryGetComponent(out MixedMomentumBehavior other))
                     break;
 
                 Bounce(hit.normal, other);
@@ -82,7 +107,7 @@ public class MomentumBehavior : MonoBehaviour
                 if (collider.gameObject == gameObject)
                     continue;
 
-                if (!collider.TryGetComponent(out MomentumBehavior other))
+                if (!collider.TryGetComponent(out MixedMomentumBehavior other))
                     break;
 
                 if (Physics.Raycast(transform.position, collider.ClosestPoint(transform.position) - transform.position, out RaycastHit hit))
@@ -98,18 +123,24 @@ public class MomentumBehavior : MonoBehaviour
         }
     }
 
-    public void AddForce(in Vector3 inForce) => force += inForce;
-
     private void ApplyNewtonianLaws()
     {
+        angularMomentum = torque * Time.fixedDeltaTime;
+        torque = Vector3.zero;
+
+        angularAcceleration = angularMomentum / momentOfInertia;
+
+        angularVelocity += angularAcceleration * Time.fixedDeltaTime;
+
         acceleration = force / mass;
         force = Vector3.zero;
 
         velocity += acceleration * Time.fixedDeltaTime;
 
         transform.position = nextPosition;
+        transform.rotation = nextRotation;
     }
-    
+
     private void FixedUpdate()
     {
         if (isStatic)
@@ -135,6 +166,9 @@ public class MomentumBehavior : MonoBehaviour
         GUIContent content = new GUIContent();
         content.text += "Speed = " + velocity + '\n';
         content.text += "Momentum = " + momentum + '\n';
+        content.text += "angularMomentum = " + angularMomentum + '\n';
+        content.text += "angularAcceleration = " + angularAcceleration + '\n';
+        content.text += "angularVelocity = " + angularVelocity + '\n';
         GUI.Label(new Rect(10 + GUIOffset.x, 10 + GUIOffset.y, 150, 100), content);
 
     }

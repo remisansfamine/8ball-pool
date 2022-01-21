@@ -9,7 +9,7 @@ public class GameManagerScript : MonoBehaviour
     private PlayerBehavior currentPlayer;
     private int currentPlayerID = 0;
 
-    [SerializeField] private MomentumBehavior mainBall;
+    [SerializeField] private MixedMomentumBehavior mainBall;
 
     bool turnLaunched = true;
 
@@ -122,6 +122,7 @@ public class GameManagerScript : MonoBehaviour
 
                 Vector3 direction = -poolCue.transform.forward;
                 Vector3 forceVec = new Vector3(direction.x * force, 0f, direction.z * force);
+                //mainBall.AddForceTorque(Vector3.ClampMagnitude(forceVec, maxSpeed), Vector3.zero);
                 mainBall.velocity = Vector3.ClampMagnitude(forceVec, maxSpeed);
 
                 poolCue.gameObject.SetActive(false);
@@ -134,7 +135,7 @@ public class GameManagerScript : MonoBehaviour
     }
     bool CheckTurnPassed() => mainBall.velocity.sqrMagnitude < epsilonVelocity;
 
-    public void HoleCallback(MomentumBehavior puttedBall)
+    public void HoleCallback(MixedMomentumBehavior puttedBall)
     {
         if (puttedBall != mainBall)
             currentPlayer.score++;

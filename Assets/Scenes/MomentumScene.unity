@@ -160,10 +160,10 @@ MonoBehaviour:
   isStatic: 0
   hasGravity: 0
   mass: 9500
-  initialVelocity: {x: 0.4, y: 0, z: 0}
-  averageAcceleration: {x: 0, y: 0, z: 0}
+  bouciness: 0.5
+  velocity: {x: 0, y: 0, z: 0}
+  frictionCoeff: 0.05
   GUIOffset: {x: 0, y: 100}
-  rb: {fileID: 0}
 --- !u!65 &76586005
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -293,10 +293,10 @@ MonoBehaviour:
   isStatic: 0
   hasGravity: 0
   mass: 9500
-  initialVelocity: {x: 0.1, y: 0, z: 0}
-  averageAcceleration: {x: 0, y: 0, z: 0}
+  bouciness: 0.5
+  velocity: {x: -3.4, y: 0, z: 0}
+  frictionCoeff: 0.05
   GUIOffset: {x: 0, y: 0}
-  rb: {fileID: 0}
 --- !u!65 &422594106
 BoxCollider:
   m_ObjectHideFlags: 0
