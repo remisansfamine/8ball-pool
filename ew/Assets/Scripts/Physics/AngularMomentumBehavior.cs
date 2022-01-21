@@ -56,22 +56,6 @@ public class AngularMomentumBehavior : MonoBehaviour
 
         transform.position += acceleration * Time.fixedDeltaTime;
 
-        //transform.eulerAngles += angularVelocity * Time.fixedDeltaTime;
-
-        //transform.rotation = new Quaternion
-        /* orientation += Time.fixedDeltaTime * angularVelocity;
-         Vector3 halfAngle = 0.5f * orientation;
-
-         float l = halfAngle.magnitude;
-
-         if (l > 0f)
-         {
-             halfAngle *= Mathf.Sin(l) / l;
-             transform.rotation = new Quaternion(halfAngle.x, halfAngle.y, halfAngle.z, Mathf.Cos(l));
-         }
-         else 
-             transform.rotation = new Quaternion(halfAngle.x, halfAngle.y, halfAngle.z, 1f);*/
-
         transform.rotation *= Quaternion.Euler(Time.fixedDeltaTime * angularVelocity);
     }
 
