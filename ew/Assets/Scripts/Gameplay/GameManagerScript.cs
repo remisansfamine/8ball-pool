@@ -9,7 +9,7 @@ public class GameManagerScript : MonoBehaviour
     private PlayerBehavior currentPlayer;
     private int currentPlayerID = 0;
 
-    [SerializeField] private MixedMomentumBehavior mainBall;
+    [SerializeField] private Ball mainBall;
 
     bool turnLaunched = true;
 
@@ -101,11 +101,9 @@ public class GameManagerScript : MonoBehaviour
             if (!Physics.Raycast(ray, out RaycastHit hit))
                 return;
 
-            Vector3 dir = hit.point -mainBall.transform.position;
+            Vector3 dir = hit.point - mainBall.transform.position;
             dir.y = 0;
             poolCue.transform.forward = dir;
-
-            Debug.Log("Touch");
         }
 
 
@@ -122,8 +120,12 @@ public class GameManagerScript : MonoBehaviour
 
                 Vector3 direction = -poolCue.transform.forward;
                 Vector3 forceVec = new Vector3(direction.x * force, 0f, direction.z * force);
-                //mainBall.AddForceTorque(Vector3.ClampMagnitude(forceVec, maxSpeed), Vector3.zero);
-                mainBall.velocity = Vector3.ClampMagnitude(forceVec, maxSpeed);
+
+                Vector3 pos = new Vector3(0f, 1f, 0f);
+                Vector3 currforce = Vector3.ClampMagnitude(forceVec, maxSpeed);
+                mainBall.AddLocalTorque(currforce, pos);
+                mainBall.AddForce(currforce);
+                //mainBall.velocity = Vector3.ClampMagnitude(forceVec, maxSpeed);
 
                 poolCue.gameObject.SetActive(false);
 
@@ -133,9 +135,9 @@ public class GameManagerScript : MonoBehaviour
         }
         
     }
-    bool CheckTurnPassed() => mainBall.velocity.sqrMagnitude < epsilonVelocity;
+    bool CheckTurnPassed() => mainBall.Velocity.sqrMagnitude < epsilonVelocity;
 
-    public void HoleCallback(MixedMomentumBehavior puttedBall)
+    public void HoleCallback(Ball puttedBall)
     {
         if (puttedBall != mainBall)
             currentPlayer.score++;
