@@ -8,7 +8,7 @@ public class HoleBehavior : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        gameManager?.HoleCallback(other.gameObject.GetComponent<MixedMomentumBehavior>());
+        gameManager?.HoleCallback(other.gameObject.GetComponent<Ball>());
         Destroy(other.gameObject);
     }
 }

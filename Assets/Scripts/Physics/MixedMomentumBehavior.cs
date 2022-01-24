@@ -48,13 +48,24 @@ public class MixedMomentumBehavior : MonoBehaviour
     {
         torque += Vector3.Cross(_position - transform.position, _force);
     }
+
+    void AddLocalTorque(Vector3 _force, Vector3 _position)
+    {
+        torque += Vector3.Cross(_position, _force);
+    }
     public void AddForceTorque(Vector3 _force, Vector3 _position)
     {
         AddForce(_force);
         AddTorque(_force, _position);
     }
 
-    private void Bounce(Vector3 normal, MixedMomentumBehavior other)
+    public void AddForceLocalTorque(Vector3 _force, Vector3 _position)
+    {
+        AddForce(_force);
+        AddLocalTorque(_force, _position);
+    }
+
+    private void Bounce(Vector3 hitPoint, Vector3 normal, MixedMomentumBehavior other)
     {
         if (isStatic || !other || other == this)
             return;
@@ -68,10 +79,16 @@ public class MixedMomentumBehavior : MonoBehaviour
         Vector3 direction = normal;
         direction = MathsUtils.Reflect(deltaV.normalized, normal);
 
-        velocity = u1.magnitude * direction;
+        Vector3 force = u1.magnitude * direction;
+        velocity = force;
+        AddTorque(force, hitPoint);
 
         if (!other.isStatic)
-            other.velocity = -u2.magnitude * direction;
+        {
+            Vector3 otherForce = -u2.magnitude * direction;
+            other.velocity = otherForce;
+            other.AddTorque(otherForce, hitPoint);
+        }
     }
 
     bool CheckIsZero(float epsilon) => velocity.sqrMagnitude < epsilon;
@@ -90,7 +107,7 @@ public class MixedMomentumBehavior : MonoBehaviour
                 if (!hit.collider.TryGetComponent(out MixedMomentumBehavior other))
                     break;
 
-                Bounce(hit.normal, other);
+                Bounce(hit.point, hit.normal, other);
 
                 lastPositionCollision = nextPosition;
 
@@ -114,7 +131,7 @@ public class MixedMomentumBehavior : MonoBehaviour
                 {
                     Debug.Log(other.name);
 
-                    Bounce(hit.normal, other);
+                    Bounce(hit.point, hit.normal, other);
 
                     lastPositionCollision = collider.ClosestPoint(transform.position);
                     Debug.DrawRay(collider.ClosestPoint(transform.position), hit.normal, Color.red, 10);
@@ -169,7 +186,7 @@ public class MixedMomentumBehavior : MonoBehaviour
         content.text += "angularMomentum = " + angularMomentum + '\n';
         content.text += "angularAcceleration = " + angularAcceleration + '\n';
         content.text += "angularVelocity = " + angularVelocity + '\n';
-        GUI.Label(new Rect(10 + GUIOffset.x, 10 + GUIOffset.y, 150, 100), content);
+        GUI.Label(new Rect(10 + GUIOffset.x, 10 + GUIOffset.y, 5000, 5000), content);
 
     }
 
