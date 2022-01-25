@@ -11,15 +11,15 @@ public class MomentumBehavior : MonoBehaviour
 
     [SerializeField] private bool hasGravity = true;
 
-    [SerializeField] private float mass = 1f;
+    public float mass = 1f;
 
     public Vector3 velocity;
 
-    private Vector3 force = Vector3.zero;
+    public Vector3 force { get; private set; } = Vector3.zero;
 
-    private Vector3 acceleration = Vector3.zero;
+    public Vector3 acceleration { get; private set; } = Vector3.zero;
 
-    [SerializeField] private float frictionCoeff = 0.05f;
+    public float frictionCoeff = 0.05f;
 
     Vector3 lastPositionCollision = Vector3.zero;
 
@@ -118,7 +118,7 @@ public class MomentumBehavior : MonoBehaviour
         ComputeCollisions();
 
         if (hasGravity)
-            AddForce(-9.81f * mass * Vector3.up);
+            AddForce(9.81f * mass * Vector3.down);
 
         AddForce(-frictionCoeff * velocity);
 
