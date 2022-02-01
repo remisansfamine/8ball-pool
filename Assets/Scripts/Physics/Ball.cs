@@ -2,25 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Ball : MonoBehaviour
+public class Ball : PhysicsParameter
 {
-    [SerializeField] private float momentOfInertia = 0.1f;
-
-    [SerializeField] private Vector3 velocity;
-    public Vector3 Velocity => velocity;
-
-    [SerializeField] private Vector3 angularVelocity;
-    [SerializeField] private float frictionCoef = 1f;
-    [SerializeField] private float angularFrictionCoef = 1f;
-
-    [SerializeField] private float mass = 1f;
-
-    [SerializeField] private float radius = 0.5f;
-
     bool CheckCollision(out RaycastHit hit)
     {
         Collider[] colliders = Physics.OverlapSphere(transform.position, radius);
-        
+
         foreach (Collider collider in colliders)
         {
             if (collider.gameObject == gameObject)
@@ -40,7 +27,26 @@ public class Ball : MonoBehaviour
 
     private void OnCollide(RaycastHit hit)
     {
-        
+        //if (!hit.collider.TryGetComponent(out PhysicsParameter other))
+        //    return;
+        //
+        //Vector3 deltaV = Velocity - other.Velocity;
+        //float massSum = Mass + other.Mass;
+        //
+        //Vector3 u1 = other.Mass / massSum * deltaV;
+        //Vector3 u2 = Mass / massSum * deltaV;
+        //
+        //Vector3 direction = MathsUtils.Reflect(deltaV.normalized, hit.normal);
+        //Vector3 force = u1.magnitude * direction;
+        //velocity = force;
+        //AddTorque(force, hitPoint);
+        //
+        //if (!other.isStatic)
+        //{
+        //    Vector3 otherForce = -u2.magnitude * direction;
+        //    other.velocity = otherForce;
+        //    other.AddTorque(otherForce, hitPoint);
+        //}
     }
 
     private void FixedUpdate()
@@ -53,7 +59,7 @@ public class Ball : MonoBehaviour
 
     private void Move()
     {
-        transform.position += velocity * Time.fixedDeltaTime;
+        transform.position += new Vector3(velocity.x, 0f, velocity.z) * Time.fixedDeltaTime;
         transform.rotation *= Quaternion.Euler(Time.fixedDeltaTime * angularVelocity);
     }
 
@@ -63,22 +69,31 @@ public class Ball : MonoBehaviour
         AddForce(-frictionCoef * velocity);
         AddTorque(-angularFrictionCoef  * angularVelocity);
 
-        //Simulate Spin
-        AddLocalTorque(-velocity, Vector3.down);
+        //AddForce(Quaternion.Euler(angularVelocity / Time.fixedDeltaTime) * velocity);
 
-        //Vector3 coef = Vector3.Cross(velocity, angularVelocity).normalized;
-        //velocity += velocity * Vector3.Dot(-velocity, coef);
-        //Debug.Log("Coef : " + coef + " Angle : " + angle);
-        
+        //Simulate Spin
+        //Vector3 radAngularVelocity = angularVelocity * Mathf.Deg2Rad;
+        //
+        //AddForce((radAngularVelocity * 0.5f - velocity) / Time.fixedDeltaTime);
+
         Move();
     }
 
     public void AddForce(Vector3 force)
     {
         velocity += Time.fixedDeltaTime / mass * force;
+        //AddLocalTorque(-velocity, Vector3.down);
     }
 
-    public void AddTorque(Vector3 torque) => angularVelocity += Time.fixedDeltaTime / momentOfInertia * torque;
-    public void AddTorque(Vector3 force, Vector3 position) => AddTorque(force, position - transform.position);
+    //xnzsn
+    
+    public void AddTorque(Vector3 torque)
+    {
+        angularVelocity += Time.fixedDeltaTime / momentOfInertia * torque;
+        //AddForce(Quaternion.Euler(angularVelocity * Time.fixedDeltaTime) * velocity * jkrtse);
+        velocity = Quaternion.Euler(angularVelocity * Time.fixedDeltaTime) * velocity;
+        Debug.Log("Velocity = " + velocity);
+    }
+    public void AddTorque(Vector3 force, Vector3 position) => AddTorque(Vector3.Cross(position - transform.position, force));
     public void AddLocalTorque(Vector3 force, Vector3 position) => AddTorque(Vector3.Cross(position, force));
 }

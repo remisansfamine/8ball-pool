@@ -460,8 +460,9 @@ MonoBehaviour:
   - {fileID: 2132814380}
   - {fileID: 1119676572}
   mainBall: {fileID: 535590108}
+  pos: {x: 0, y: 0.5}
   maxSpeed: 4832.3
-  epsilonVelocity: 0.001
+  epsilonVelocity: 0.1
   slider: {fileID: 687995405}
   sliderCoef: 0.05
   poolCue: {fileID: 1827571334}

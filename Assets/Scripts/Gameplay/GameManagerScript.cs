@@ -10,6 +10,7 @@ public class GameManagerScript : MonoBehaviour
     private int currentPlayerID = 0;
 
     [SerializeField] private Ball mainBall;
+    [SerializeField] private Vector2 pos = Vector2.zero;
 
     bool turnLaunched = true;
 
@@ -121,7 +122,7 @@ public class GameManagerScript : MonoBehaviour
                 Vector3 direction = -poolCue.transform.forward;
                 Vector3 forceVec = new Vector3(direction.x * force, 0f, direction.z * force);
 
-                Vector3 pos = new Vector3(0f, -1f, 0f);
+                //Vector3 pos = new Vector3(0.0f, 0f, 0f);
                 Vector3 currforce = Vector3.ClampMagnitude(forceVec, maxSpeed);
                 mainBall.AddLocalTorque(currforce, pos);
                 mainBall.AddForce(currforce);
