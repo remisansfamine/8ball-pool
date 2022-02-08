@@ -5,10 +5,12 @@ using UnityEngine;
 public class PhysicsParameter : MonoBehaviour
 {
     [SerializeField] private bool isStatic;
+    [SerializeField] protected float bounciness = 1f;
+    public float Bounciness => bounciness;
 
     [SerializeField] protected float momentOfInertia = 0.1f;
 
-    [SerializeField] public Vector3 velocity;
+    [SerializeField] protected Vector3 velocity;
     public Vector3 Velocity => velocity;
 
     [SerializeField] protected Vector3 angularVelocity;

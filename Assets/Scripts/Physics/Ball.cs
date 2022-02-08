@@ -5,53 +5,14 @@ using UnityEngine;
 public class Ball : PhysicsParameter
 {
     bool Approximately(Vector3 a, float epsilon) { return a.sqrMagnitude < epsilon; }
-    bool CheckCollision(out RaycastHit hit)
+    RaycastHit[] CheckCollision()
     {
-        {
-            Vector3 nextPosition = transform.position + velocity * Time.fixedDeltaTime;
+        Vector3 nextPosition = transform.position + velocity * Time.fixedDeltaTime;
 
-            float distance = Vector3.Distance(transform.position, nextPosition);
+        float distance = Vector3.Distance(transform.position, nextPosition);
+        Vector3 velDir = velocity.normalized;
 
-            Vector3 velDir = velocity.normalized;
-
-            bool hasHit = Physics.SphereCast(transform.position, radius, velDir, out hit, distance + 0.1f);
-            
-            if (hasHit)
-            {
-                if (hit.collider.gameObject != gameObject)
-                {
-                    Debug.Log("CAAAAAAAAAAAAAASSSSSSSSSSSSSSSSSSSSSSSSSSSST !111");
-                    return true;
-                }
-                else
-                {
-                    Debug.LogWarning("Il y a un probleme car c'est moi qui collide 11!!!");
-                }
-            }
-        }
-
-        //{
-        //    Collider[] colliders = Physics.OverlapSphere(transform.position, radius);
-        //
-        //    foreach (Collider collider in colliders)
-        //    {
-        //        if (collider.gameObject == gameObject)
-        //            continue;
-        //
-        //        Vector3 dir = collider.ClosestPoint(transform.position) - transform.position;
-        //        Ray ray = new Ray(transform.position, dir);
-        //        if (Physics.Raycast(ray, out hit, 0.5f))
-        //        {
-        //            Debug.Log("OVERLQQQQAAAp !111");
-        //            return true;
-        //        }
-        //    }
-        //
-        //    hit = new RaycastHit();
-        //    return false;
-        //}
-
-        return false;
+        return Physics.SphereCastAll(transform.position, radius, velDir, distance);
     }
 
     private void OnCollide(RaycastHit hit)
@@ -67,23 +28,34 @@ public class Ball : PhysicsParameter
 
         Vector3 direction = MathsUtils.Reflect(deltaV.normalized, hit.normal);
 
+        float averageBounciness = (Bounciness + other.Bounciness) * 0.5f;
+
         Vector3 vel = u1.magnitude * direction;
         Vector3 force = mass / Time.fixedDeltaTime * (vel - velocity);
 
-        AddForce(force);
+         
+        //Debug.LogWarning("Force : " + force);
+        AddForce(force * averageBounciness);
         AddTorque(force, hit.point);
 
+        Debug.DrawRay(hit.point, hit.normal * 5, Color.red, 10f);
+
         Vector3 otherVel = -u2.magnitude * direction;
-        Vector3 otherForce = other.Mass / Time.fixedDeltaTime * (otherVel - other.velocity);
+        Vector3 otherForce = other.Mass / Time.fixedDeltaTime * (otherVel - other.Velocity);
         
-        other.AddForce(otherForce);
+        other.AddForce(otherForce * averageBounciness);
         other.AddTorque(otherForce, hit.point);
     }
 
     private void FixedUpdate()
     {
-        if (CheckCollision(out RaycastHit hit))
-            OnCollide(hit);
+        RaycastHit[] hits = CheckCollision();
+
+        foreach (RaycastHit hit in hits)
+        {
+            if (hit.collider.gameObject != gameObject)
+                OnCollide(hit);
+        }
 
         Move();
         SimulatePhysics();
@@ -97,16 +69,15 @@ public class Ball : PhysicsParameter
 
     private void SimulatePhysics() 
     {
+        //Simulate gravity
+        AddForce(Physics.gravity * Mass);
+
         //Simulate Friction
         AddForce(-frictionCoef * velocity);
         AddTorque(-angularFrictionCoef  * angularVelocity);
 
         //Simulate Spin
         AddLocalTorque(-velocity, Vector3.down);
-
-        //Simulate gravity
-        AddForce(Physics.gravity * Mass);
-
     }
 
 }
