@@ -91,21 +91,7 @@ public class GameManagerScript : MonoBehaviour
 
     private void Play()
     {
-        poolCue.transform.position = new Vector3(mainBall.transform.position.x, 
-            poolCue.transform.position.y, 
-            mainBall.transform.position.z);
-
-        if (Input.GetButton("Shoot") && !sliderUp)
-        {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-            if (!Physics.Raycast(ray, out RaycastHit hit))
-                return;
-
-            Vector3 dir = hit.point - mainBall.transform.position;
-            dir.y = 0;
-            poolCue.transform.forward = dir;
-        }
+        poolCue.transform.position = mainBall.transform.position;
 
 
         if (Input.GetButtonUp("Shoot") && sliderUp)
