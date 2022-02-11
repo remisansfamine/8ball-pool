@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PhysicsParameter : MonoBehaviour
 {
-    [SerializeField] private bool isStatic;
+    [SerializeField] public bool isStatic;
     [SerializeField] protected float bounciness = 1f;
     public float Bounciness => bounciness;
 
@@ -26,16 +26,12 @@ public class PhysicsParameter : MonoBehaviour
     {
         if (!isStatic)
             velocity += Time.fixedDeltaTime / mass * force;
-        //AddLocalTorque(-velocity, Vector3.down);
     }
 
     public void AddTorque(Vector3 torque)
     { 
         if (!isStatic)
             angularVelocity += Time.fixedDeltaTime / momentOfInertia * torque;
-        //AddForce(Quaternion.Euler(angularVelocity * Time.fixedDeltaTime) * velocity * jkrtse);
-        //velocity = Quaternion.Euler(angularVelocity * Time.fixedDeltaTime) * velocity;
-        //Debug.Log("Velocity = " + velocity);
     }
     public void AddTorque(Vector3 force, Vector3 position) => AddTorque(Vector3.Cross(position - transform.position, force));
     public void AddLocalTorque(Vector3 force, Vector3 position) => AddTorque(Vector3.Cross(position, force));
