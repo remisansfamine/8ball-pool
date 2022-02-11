@@ -32,19 +32,21 @@ public class Ball : PhysicsParameter
 
         Vector3 vel = u1.magnitude * direction;
         Vector3 force = mass / Time.fixedDeltaTime * (vel - velocity);
-
          
         //Debug.LogWarning("Force : " + force);
         AddForce(force * averageBounciness);
-        AddTorque(force, hit.point);
+        //AddTorque(vel, hit.point);
 
         Debug.DrawRay(hit.point, hit.normal * 5, Color.red, 10f);
 
         Vector3 otherVel = -u2.magnitude * direction;
         Vector3 otherForce = other.Mass / Time.fixedDeltaTime * (otherVel - other.Velocity);
-        
-        other.AddForce(otherForce * averageBounciness);
-        other.AddTorque(otherForce, hit.point);
+
+        if (!isStatic)
+        {
+            other.AddForce(otherForce * averageBounciness);
+            //other.AddTorque(otherForce, hit.point);
+        }
     }
 
     private void FixedUpdate()
@@ -78,6 +80,7 @@ public class Ball : PhysicsParameter
 
         //Simulate Spin
         AddLocalTorque(-velocity, Vector3.down);
+
     }
 
 }

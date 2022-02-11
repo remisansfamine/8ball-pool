@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class GameManagerScript : MonoBehaviour
 {
@@ -11,6 +12,11 @@ public class GameManagerScript : MonoBehaviour
 
     [SerializeField] private Ball mainBall;
     [SerializeField] private Vector2 pos = Vector2.zero;
+
+    [SerializeField] private TMP_Text currPlayer;
+    [SerializeField] private TMP_Text scorePlayer_1;
+    [SerializeField] private TMP_Text scorePlayer_2;
+
 
     bool turnLaunched = true;
 
@@ -56,6 +62,16 @@ public class GameManagerScript : MonoBehaviour
         {
             ChangeTurn();
         }
+
+        UpdateUI();
+
+    }
+
+    void UpdateUI()
+    {
+        currPlayer.text = "Joueur " + (currentPlayerID + 1).ToString();
+        scorePlayer_1.text = "Joueur 1 = " + players[0].score.ToString();
+        scorePlayer_2.text = "Joueur 2 = " + players[1].score.ToString();
     }
 
     void ChangeTurn()
@@ -132,15 +148,15 @@ public class GameManagerScript : MonoBehaviour
             Application.Quit();
     }
 
-    private void OnGUI()
-    {
-        GUIContent content = new GUIContent();
-        for (int i = 0; i < players.Count; i++)
-            content.text += "Player " + (i + 1) + " : " + players[i].score + '\n';
-
-
-        content.text += "Current player: " + (currentPlayerID + 1) + '\n';
-
-        GUI.Label(new Rect(10, 10, 150, 100), content);
-    }
+    //private void OnGUI()
+    //{
+    //    GUIContent content = new GUIContent();
+    //    for (int i = 0; i < players.Count; i++)
+    //        content.text += "Player " + (i + 1) + " : " + players[i].score + '\n';
+    //
+    //
+    //    content.text += "Current player: " + (currentPlayerID + 1) + '\n';
+    //
+    //    GUI.Label(new Rect(10, 10, 150, 100), content);
+    //}
 }
